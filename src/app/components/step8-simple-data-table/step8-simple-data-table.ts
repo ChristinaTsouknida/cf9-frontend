@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, input, Output, SimpleChanges } from '@angular/core';
 import { IPerson } from '../../shared/interfaces/person';
 import { sortBy } from 'lodash-es';
 
@@ -13,11 +13,21 @@ export class Step8SimpleDataTable {
   @Output() personClicked = new EventEmitter<IPerson>()
 
   ngOnInit() {
-    console.log("NG ON INIT", this.sortOrder);
+    // console.log("NG ON INIT", this.sortOrder);
     // this.sortOrder['firstname'] = 'asc';
-    // this.data = sortBy(this.data, 'firstname');
+    this.data = sortBy(this.data, 'firstname');
     this.sortData('firstname');
-    console.log("NG ON INIT 2", this.sortOrder);
+    // console.log(this.data);
+    // console.log("NG ON INIT 2", this.sortOrder);
+    // console.log(this.data);
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    // console.log("Changes>>>", changes);
+    // console.log("Changes data", changes["data"]);
+    if (changes["data"] && this.data) {
+      this.sortData('firstname');
+    }
   }
 
   sortOrder = {
@@ -27,7 +37,8 @@ export class Step8SimpleDataTable {
   }
 
   sortData(sortKey: keyof IPerson) {
-    console.log("SortData", this.sortOrder[sortKey], sortKey);
+    console.log("STEP 8", this.data);
+    // console.log("SortData", this.sortOrder[sortKey], sortKey);
     if (this.sortOrder[sortKey] === 'asc') {
       this.sortOrder[sortKey] = 'desc';
       this.data = sortBy(this.data, sortKey).reverse();
