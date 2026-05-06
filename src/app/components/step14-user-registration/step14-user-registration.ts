@@ -40,5 +40,7 @@ export class Step14UserRegistration {
         type: new FormControl('')
       })
     ])
-  })
+  });
+
+  phone = this.form.get('phone') as FormArray;
 }
